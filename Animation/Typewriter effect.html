@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Typewriter effect</title>
+    <style>
+
+        body {
+            background-color: black;
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .typed-cursor, .textInner {
+            display: inline-block;
+        }
+
+        .typed-cursor--blink {
+            animation: blink 0.7s infinite;
+        }
+
+        @keyframes blink {
+            50% {
+                opacity: 0;
+            }
+        }
+
+        .centered-text {
+            color: white;
+            font-size: 24px;
+            font-weight: bold;
+            text-shadow: 1px 1px 2px black;
+            pointer-events: none;
+            white-space: nowrap;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div id="text" class="centered-text">
+        <span class="textInner"></span>
+        <span class="typed-cursor typed-cursor--blink" aria-hidden="true">&nbsp;_</span>
+    </div>
+
+    <script>
+        /**
+         * 模拟打字机效果，逐个字符显示文本。
+         * @param {string} text - 要显示的文本。
+         * @param {string} selector - 目标元素的CSS选择器。
+         */
+        function typewriterEffect(text, selector) {
+            const element = document.querySelector(selector);
+            if (!element) {
+                console.error(`未找到选择器为 ${selector} 的元素。`);
+                return;
+            }
+            element.textContent = ''; // 使用 textContent 更安全
+            let charIndex = 0;
+            const delayPerChar = text.length > 20 ? 100 : 200; // 根据文本长度调整打字速度
+            const intervalId = setInterval(() => {
+                if (charIndex < text.length) {
+                    element.textContent += text[charIndex];
+                    charIndex++;
+                } else {
+                    clearInterval(intervalId); // 全部显示完成后停止
+                }
+            }, delayPerChar);
+        }
+
+        // 延时200ms后启动打字效果
+        setTimeout(() => {
+            typewriterEffect('text txt', '.textInner');
+        }, 200);
+    </script>
+</body>
+</html>
